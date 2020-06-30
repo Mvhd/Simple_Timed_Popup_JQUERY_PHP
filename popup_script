@@ -1,0 +1,28 @@
+$(document).ready(function(){
+  //extra hack to clean up stored item incase unwanted data stored with "stored_string_in_localstorage"
+    if(localStorage.getItem('stored_string_in_localstorage') == 'true'){
+        localStorage.removeItem('stored_string_in_localstorage');
+    }
+    
+    var initial_time= $.now(); //current timestamp to be stored as string in local storage
+    var time_now =$.now(); //the timestamp popup is to show
+    
+    diff_in_days = ( parseInt(time_now) - parseInt(localStorage.getItem('stored_string_in_localstorage')) )/(1000 * 3600 * 24); // difference in time to initiate popup day of choice
+    
+    //15 here is fifteen days. You can change to any day of your choice
+    if( diff_in_days > 15 ){ 
+            localStorage.removeItem('stored_string_in_localstorage');
+        }
+        
+    if ((typeof localStorage !== 'undefined') &&
+        (localStorage.getItem('stored_string_in_localstorage') === null)) {
+        var data = $('DOM_Element').val(); //incase you are passing any data but optional
+        $.post('<?php echo your_php_url_here; ?>', {
+            data: data
+        },
+        function(data) {
+            $('#DOM_Element_ID_To_Display_popup').html(data);
+        });
+        localStorage.setItem('stored_string_in_localstorage',initial_time);
+    }
+});
